@@ -1,0 +1,25 @@
+{
+  "name": "rollup-starter-app",
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "*",
+    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-node-resolve": "*",
+    "npm-run-all": "*",
+    "rollup": "*",
+    "rollup-plugin-node-builtins": "^2.1.2",
+    "rollup-plugin-terser": "*",
+    "serve": "*"
+  },
+  "dependencies": {
+    "@scatterjs/core": "^2.7.54",
+    "@scatterjs/eosjs2": "^1.5.36",
+    "date-fns": "*",
+    "eosjs": "^21.0.3"
+  },
+  "scripts": {
+    "build": "rollup -c",
+    "watch": "rollup -c -w",
+    "dev": "npm-run-all --parallel start watch",
+    "start": "serve public"
+  }
+}
