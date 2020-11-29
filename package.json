@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "date-fns": "*",
-    "eosjs": "*"
+    "eosjs": "20.0.0"
   },
   "scripts": {
     "build": "rollup -c",

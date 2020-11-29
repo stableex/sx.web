@@ -1,4 +1,4 @@
-import { update_time, update_block } from './update';
+import { update_time, update_block, update_mykey } from './update';
 import { login } from './scatter';
 import * as actions from './actions';
 
@@ -6,3 +6,4 @@ import * as actions from './actions';
 update_time()
 update_block();
 login();
+update_mykey();

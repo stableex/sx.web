@@ -200,7 +200,7 @@ export default class SocketService {
         return true;
     }
 
-    sendApiRequest(request){
+    sendApiRequest(request) {
         return new Promise((resolve, reject) => {
             if(request.type === 'identityFromPermissions' && !this.paired) return resolve(false);
 

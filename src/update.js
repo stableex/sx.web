@@ -4,6 +4,7 @@ import { rpc } from "./config";
 var span = document.querySelector('#time-now');
 var scatter = document.querySelector('#scatter');
 var block = document.querySelector('#block');
+var mykey = document.querySelector('#mykey');
 
 export function update_time() {
 	span.textContent = format(new Date(), 'h:mm:ssa');
@@ -19,4 +20,8 @@ export function update_block() {
 
 export function update_scatter(id) {
 	scatter.textContent = JSON.stringify(id);
+}
+
+export function update_mykey() {
+	mykey.textContent = (window.ethereum && window.ethereum.isMYKEY) ? window.ethereum.isMYKEY : false;
 }
