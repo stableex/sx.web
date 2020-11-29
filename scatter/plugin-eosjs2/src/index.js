@@ -13,7 +13,7 @@ let cache = {};
 
 export default class ScatterEOS extends Plugin {
 
-    constructor(){
+    constructor() {
         super(Blockchains.EOS, PluginTypes.BLOCKCHAIN_SUPPORT);
     }
 
@@ -25,10 +25,10 @@ export default class ScatterEOS extends Plugin {
         network = Network.fromJson(network);
 
         return {
-            requiredFields:{},
-            getAvailableKeys:async () => {
+            requiredFields: {},
+            getAvailableKeys: async () => {
                 return await socketService.sendApiRequest({
-                    type:'identityFromPermissions',
+                    type: 'identityFromPermissions',
                     payload:{}
                 }).then(id => {
                     if(!id) return [];
@@ -36,7 +36,7 @@ export default class ScatterEOS extends Plugin {
                 });
             },
 
-            sign:async (signargs) => {
+            sign: async (signargs) => {
                 const requiredFields = fieldsFetcher ? fieldsFetcher() : {};
                 signargs.serializedTransaction = Buffer.from(signargs.serializedTransaction).toString('hex');
 
@@ -77,7 +77,7 @@ export default class ScatterEOS extends Plugin {
 	            }
             },
 
-            sign:async (signargs) => {
+            sign: async (signargs) => {
 	            try {
 		            const serializedTransaction = Buffer.from(signargs.serializedTransaction, 'hex');
 
@@ -89,7 +89,7 @@ export default class ScatterEOS extends Plugin {
 		            });
 
 		            const pullOutSignatures = result => {
-			            if(typeof result === 'object' && result.hasOwnProperty('signatures')) return result.signatures;
+			            if (typeof result === 'object' && result.hasOwnProperty('signatures')) return result.signatures;
 			            return result;
 		            };
 
@@ -150,6 +150,6 @@ export default class ScatterEOS extends Plugin {
     }
 }
 
-if(typeof window !== 'undefined') {
+if (typeof window !== 'undefined') {
 	window.ScatterEOS = ScatterEOS;
 }

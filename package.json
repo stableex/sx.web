@@ -1,20 +1,18 @@
 {
-  "name": "rollup-starter-app",
+  "name": "sx.web",
   "devDependencies": {
     "@rollup/plugin-commonjs": "*",
-    "@rollup/plugin-json": "^4.1.0",
+    "@rollup/plugin-json": "*",
     "@rollup/plugin-node-resolve": "*",
     "npm-run-all": "*",
     "rollup": "*",
-    "rollup-plugin-node-builtins": "^2.1.2",
+    "rollup-plugin-node-builtins": "*",
     "rollup-plugin-terser": "*",
     "serve": "*"
   },
   "dependencies": {
-    "@scatterjs/core": "^2.7.54",
-    "@scatterjs/eosjs2": "^1.5.36",
     "date-fns": "*",
-    "eosjs": "^21.0.3"
+    "eosjs": "*"
   },
   "scripts": {
     "build": "rollup -c",

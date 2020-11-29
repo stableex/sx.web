@@ -6,6 +6,12 @@
             "**/.*",
             "**/node_modules/**"
         ],
-        "headers": []
+        "headers": [{
+            "source" : "/bundle.js",
+            "headers" : [{
+                "key" : "Cache-Control",
+                "value" : "no-cache"
+            }]
+        }]
     }
 }
