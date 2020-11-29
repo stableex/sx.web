@@ -1,18 +1,16 @@
-import ScatterJS from '../scatter/core/src/index';
-// import ScatterEOS from '../scatter/plugin-eosjs2/src/index';
-import { api } from "./config";
+import { get_api, get_account } from './scatter';
 
 var error = document.querySelector('#error');
 
 document.querySelector('#button').onclick = () => {
-    const account = ScatterJS.account('eos');
+    const api = get_api();
+    const account = get_account();
     const actions = {
         actions: [{
             account: 'eosio.token',
             name: 'transfer',
             authorization: [{
                 actor: account.name,
-                // actor: "mykeypostman",
                 permission: account.authority,
             }],
             data: {
@@ -23,15 +21,13 @@ document.querySelector('#button').onclick = () => {
             },
         }]
     }
-    // window.MyKey.Browser.sendTransaction(JSON.stringify(actions));
     api.transact(actions, {
         blocksBehind: 3,
         expireSeconds: 30,
     }).then(res => {
         console.log('sent: ', res);
     }).catch(err => {
-        error.textContent = err;
+        error.textContent = err.isError ? JSON.stringify(err) : err;
         console.error('error: ', err);
     });
 };
-

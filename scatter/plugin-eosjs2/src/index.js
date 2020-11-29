@@ -29,7 +29,7 @@ export default class ScatterEOS extends Plugin {
             getAvailableKeys: async () => {
                 return await socketService.sendApiRequest({
                     type: 'identityFromPermissions',
-                    payload:{}
+                    payload: {}
                 }).then(id => {
                     if(!id) return [];
                     return id.accounts.filter(x => x.blockchain === Blockchains.EOS).map(x => x.publicKey)

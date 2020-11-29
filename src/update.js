@@ -1,5 +1,4 @@
-import format from 'date-fns/format';
-import { rpc } from "./config";
+import { rpc } from "./scatter";
 
 var span = document.querySelector('#time-now');
 var scatter = document.querySelector('#scatter');
@@ -7,7 +6,7 @@ var block = document.querySelector('#block');
 var mykey = document.querySelector('#mykey');
 
 export function update_time() {
-	span.textContent = format(new Date(), 'h:mm:ssa');
+	span.textContent = new Date().toISOString();
 	setTimeout(update_time, 1000);
 }
 

@@ -11,8 +11,8 @@
     "serve": "*"
   },
   "dependencies": {
-    "date-fns": "*",
-    "eosjs": "20.0.0"
+    "eosjs": "^21.0.3",
+    "vconsole": "^3.3.4"
   },
   "scripts": {
     "build": "rollup -c",
