@@ -1,6 +1,6 @@
 import ScatterJS from '../scatter/core/src/index';
 import ScatterEOS from '../scatter/plugin-eosjs2/src/index';
-import { JsonRpc } from 'eosjs';
+import { JsonRpc, Api } from 'eosjs';
 
 ScatterJS.plugins( new ScatterEOS() );
 export const network = ScatterJS.Network.fromJson({
@@ -11,3 +11,4 @@ export const network = ScatterJS.Network.fromJson({
     protocol: 'https'
 });
 export const rpc = new JsonRpc(network.fullhost());
+export const api = ScatterJS.eos(network, Api, {rpc});

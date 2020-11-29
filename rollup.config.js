@@ -1,4 +1,3 @@
-import resolve from '@rollup/plugin-node-resolve';
 import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
 import { terser } from 'rollup-plugin-terser';
@@ -19,7 +18,6 @@ export default {
 	plugins: [
 		nodeResolve({browser: true}),
 		builtins(),
-		resolve(), // tells Rollup how to find date-fns in node_modules
 		commonjs(), // converts date-fns to ES modules
 		json(), // read ABI
 		production && terser() // minify, but only in production

@@ -11,6 +11,7 @@
 		"dist"
 	],
 	"dependencies": {
-		"@scatterjs/core": "^2.7.54"
+		"@scatterjs/core": "^2.7.54",
+		"buffer": "^6.0.3"
 	}
 }

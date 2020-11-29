@@ -5,6 +5,7 @@ import {
 	Network,
 	SocketService
 } from '../../core/src/index';
+import { Buffer } from "buffer"
 
 let socketService = SocketService;
 const proxy = (dummy, handler) => new Proxy(dummy, handler);
