@@ -8,6 +8,7 @@ export function login() {
     ScatterJS.connect('SX', {network}).then(async connected => {
         console.log("connected:", connected);
         const id = await ScatterJS.login();
+        console.log(id)
         update_scatter(id)
     });
 }

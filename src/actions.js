@@ -1,6 +1,8 @@
 import ScatterJS from '../scatter/core/src/index';
 import { api } from "./config";
 
+var error = document.querySelector('#error');
+
 document.querySelector('#button').onclick = () => {
 	const account = ScatterJS.account('eos');
     api.transact({
@@ -8,7 +10,8 @@ document.querySelector('#button').onclick = () => {
             account: 'eosio.token',
             name: 'transfer',
             authorization: [{
-                actor: account.name,
+                // actor: account.name,
+                actor: "mykeypostman",
                 permission: account.authority,
             }],
             data: {
@@ -24,6 +27,7 @@ document.querySelector('#button').onclick = () => {
     }).then(res => {
         console.log('sent: ', res);
     }).catch(err => {
+        error.textContent = err
         console.error('error: ', err);
     });
 };

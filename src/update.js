@@ -4,7 +4,6 @@ import { rpc } from "./config";
 var span = document.querySelector('#time-now');
 var scatter = document.querySelector('#scatter');
 var block = document.querySelector('#block');
-// var button = document.querySelector('#button');
 
 export function update_time() {
 	span.textContent = format(new Date(), 'h:mm:ssa');
@@ -19,6 +18,5 @@ export function update_block() {
 }
 
 export function update_scatter(id) {
-	scatter.textContent = `${ id.accounts[0].name }@${ id.publicKey }`;
+	scatter.textContent = JSON.stringify(id);
 }
-
