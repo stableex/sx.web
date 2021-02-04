@@ -16,8 +16,8 @@ export default {
 		sourcemap: true
 	},
 	plugins: [
-		nodeResolve({browser: true}),
 		builtins(),
+		nodeResolve({browser: true}),
 		commonjs(), // converts date-fns to ES modules
 		json(), // read ABI
 		production && terser() // minify, but only in production

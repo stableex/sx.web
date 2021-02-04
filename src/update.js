@@ -4,6 +4,8 @@ var span = document.querySelector('#time-now');
 var scatter = document.querySelector('#scatter');
 var block = document.querySelector('#block');
 var mykey = document.querySelector('#mykey');
+var tp = document.querySelector('#tp');
+var metamask = document.querySelector('#metamask');
 
 export function update_time() {
 	span.textContent = new Date().toISOString();
@@ -21,6 +23,8 @@ export function update_scatter(id) {
 	scatter.textContent = JSON.stringify(id);
 }
 
-export function update_mykey() {
+export function detect_wallet() {
+	metamask.textContent = (window.ethereum && window.ethereum.isMetaMask) ? window.ethereum.isMetaMask : false;
+	tp.textContent = (window.ethereum && window.ethereum.isTokenPocket) ? window.ethereum.isTokenPocket : false;
 	mykey.textContent = (window.ethereum && window.ethereum.isMYKEY) ? window.ethereum.isMYKEY : false;
 }
