@@ -1,6 +1,5 @@
-import ScatterJS from '../scatter/core/src/index';
-import ScatterEOS from '../scatter/plugin-eosjs2/src/index';
-import { update_scatter } from "./update"
+import { ScatterJS, ScatterEOS } from 'scatter-ts';
+import * as store from "./store";
 import { Api, JsonRpc } from "eosjs";
 
 ScatterJS.plugins( new ScatterEOS() );
@@ -17,9 +16,12 @@ export const rpc = new JsonRpc(network.fullhost());
 
 export async function login() {
     const connected = await ScatterJS.connect('SX', {network});
+    console.log(connected);
     if ( connected ) {
         const id = await ScatterJS.login();
-        update_scatter(id)
+        console.log(id);
+        store.scatter_id.set(JSON.stringify(id));
+        get_account();
     }
 }
 
@@ -28,5 +30,7 @@ export function get_api() {
 }
 
 export function get_account() {
-    return ScatterJS.account('eos');
+    const account = ScatterJS.account('eos');
+    store.account.set(JSON.stringify(account));
+    return account;
 }
