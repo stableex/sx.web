@@ -16,11 +16,10 @@ export const rpc = new JsonRpc(network.fullhost());
 
 export async function login() {
     const connected = await ScatterJS.connect('SX', {network});
-    console.log(connected);
+    store.is_connected.set(connected);
     if ( connected ) {
         const id = await ScatterJS.login();
-        console.log(id);
-        store.scatter_id.set(JSON.stringify(id));
+        store.scatter.set(JSON.stringify(id));
         get_account();
     }
 }
