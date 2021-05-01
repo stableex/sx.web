@@ -1,7 +1,19 @@
 <style lang="scss" global>
+	html {
+		height: 100%;
+	}
+	body {
+		height: 100%;
+		background-color: rgb(224, 237, 207);
+		padding-right: 10%;
+		padding-top: 10%;
+		padding-left: 10%;
+	}
     .main {
         padding: 1em;
         max-width: 1024px;
+		overflow-wrap: break-word;
+		background-color: rgb(228, 216, 216);
     }
 </style>
 
@@ -9,6 +21,8 @@
 	import { update_block, update_time, detect_wallet } from "./update"
 	import { login } from "./scatter"
 	import * as store from "./store"
+	import VConsole from "vconsole";
+	new VConsole();
 
 	let head_block_num: number;
 	store.head_block_num.subscribe(value => {
@@ -22,17 +36,17 @@
 
 	let scatter: any = {};
 	store.scatter.subscribe(value => {
-		scatter = JSON.parse(value);
+		scatter = JSON.parse(value || "{}");
 	});
 
 	let account: any = {};
 	store.account.subscribe(value => {
-		account = JSON.parse(value);
+		account = JSON.parse(value || "{}");
 	});
 
 	let ethereum: any = {};
 	store.ethereum.subscribe(value => {
-		ethereum = JSON.parse(value);
+		ethereum = JSON.parse(value || "{}");
 	});
 
 	update_block();
