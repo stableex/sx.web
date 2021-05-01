@@ -1,34 +1,38 @@
 {
-  "private": true,
-  "scripts": {
-    "dev": "snowpack dev --polyfill-node",
-    "build": "snowpack build --polyfill-node",
-    "check": "svelte-check"
-  },
-  "browser": {
-    "crypto": false,
-    "buffer": true
-  },
-  "dependencies": {
-    "eosjs": "*",
-    "node-fetch": "*",
-    "scatter-ts": "*",
-    "vconsole": "*"
-  },
-  "devDependencies": {
-    "@snowpack/plugin-svelte": "^3.4.0",
-    "@snowpack/plugin-typescript": "^1.1.1",
-    "@snowpack/plugin-webpack": "^2.3.1",
-    "@types/node-fetch": "^2.5.10",
-    "@types/snowpack-env": "^2.3.2",
-    "autoprefixer": "^10.1.0",
-    "esbuild": "^0.8.7",
-    "postcss": "^8.2.1",
-    "sass": "^1.30.0",
-    "snowpack": "^3.0.5",
-    "svelte": "^3.31.0",
-    "svelte-check": "^1.1.33",
-    "svelte-preprocess": "^4.6.1",
-    "typescript": "^4.1.3"
-  }
+    "private": true,
+    "scripts": {
+        "dev": "snowpack dev --polyfill-node",
+        "build": "make build",
+        "format": "make format",
+        "check": "make check"
+    },
+    "browser": {
+        "crypto": false,
+        "buffer": true
+    },
+    "dependencies": {
+        "eosjs": "*",
+        "node-fetch": "*",
+        "scatter-ts": "^0.1.4",
+        "vconsole": "*"
+    },
+    "devDependencies": {
+        "@snowpack/plugin-svelte": "^3.4.0",
+        "@snowpack/plugin-typescript": "^1.1.1",
+        "@snowpack/plugin-webpack": "^2.2.0",
+        "@types/snowpack-env": "^2.3.2",
+        "@typescript-eslint/eslint-plugin": "^4.10.0",
+        "@typescript-eslint/parser": "^4.10.0",
+        "autoprefixer": "^10.1.0",
+        "eslint": "^7.15.0",
+        "postcss": "^8.2.1",
+        "prettier": "^2.2.1",
+        "prettier-plugin-svelte": "^2.1.0",
+        "sass": "^1.30.0",
+        "snowpack": "^3.0.5",
+        "svelte": "^3.31.0",
+        "svelte-check": "^1.1.33",
+        "svelte-preprocess": "^4.6.1",
+        "typescript": "^4.1.3"
+    }
 }
