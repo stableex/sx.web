@@ -13,7 +13,7 @@
     "dependencies": {
         "eosjs": "*",
         "node-fetch": "*",
-        "scatter-ts": "^0.1.4",
+        "scatter-ts": "^0.1.5",
         "vconsole": "*"
     },
     "devDependencies": {
