@@ -1,6 +1,6 @@
 import { ScatterJS, ScatterEOS } from "scatter-ts";
-import * as store from "./store";
 import { Api, JsonRpc } from "eosjs";
+import * as store from "./store";
 
 ScatterJS.plugins(new ScatterEOS());
 
@@ -15,21 +15,31 @@ export const network = ScatterJS.Network.fromJson({
 export const rpc = new JsonRpc(network.fullhost());
 
 export async function login() {
+  const identity = await ScatterJS.login();
+  store.scatter.set(JSON.stringify(identity));
+  const account = ScatterJS.account("eos");
+  store.account.set(JSON.stringify(account));
+}
+
+export async function forget() {
+  await ScatterJS.scatter.forgetIdentity();
+  store.scatter.set("{}");
+}
+
+export async function connect() {
   const connected = await ScatterJS.connect("SX Web", { network });
-  store.is_connected.set(connected);
-  if (connected) {
-    const id = await ScatterJS.login();
-    store.scatter.set(JSON.stringify(id));
-    get_account();
-  }
+  store.connected.set(connected);
+  await login();
+}
+
+export async function disconnect() {
+  ScatterJS.scatter.disconnect();
+  store.connected.set(ScatterJS.scatter.isConnected());
+  store.scatter.set("{}");
+  store.account.set("{}");
 }
 
 export function get_api() {
   return ScatterJS.eos(network, Api, { rpc });
 }
 
-export function get_account() {
-  const account = ScatterJS.account("eos");
-  store.account.set(JSON.stringify(account));
-  return account;
-}

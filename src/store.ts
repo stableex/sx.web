@@ -6,4 +6,4 @@ export const account = writable("{}");
 export const ethereum = writable("{}");
 export const time = writable("");
 export const error = writable("");
-export const is_connected = writable(false);
+export const connected = writable(false);

@@ -1,10 +1,12 @@
-import { get_api, get_account } from "./scatter";
+import { get_api } from "./scatter";
+import { ScatterJS } from "scatter-ts";
 import * as store from "./store";
 
 export function ping() {
     console.log("ping");
     const api = get_api();
-    const account = get_account();
+    console.dir(ScatterJS )
+    const account = ScatterJS.account("eos");
     console.log(account.name);
     const actions = {
         actions: [{

@@ -1,40 +1,10 @@
-<script>
+<script lang="ts">
   import { update_block, update_time, detect_wallet } from "./update";
-  import { login } from "./scatter";
+  import { ping } from "./actions";
+  import { login, connect, forget, disconnect } from "./scatter";
   import * as store from "./store";
   import VConsole from "vconsole";
   new VConsole();
-  import { get_api, get_account } from "./scatter";
-  // import * as store from "./store";
-
-  function ping() {
-      console.log("ping");
-      const api = get_api();
-      const account = get_account();
-      console.log(account.name);
-      const actions = {
-          actions: [{
-              account: 'pingpong.sx',
-              name: 'ping',
-              authorization: [{
-                  actor: account.name,
-                  permission: account.authority,
-              }],
-              data: {
-                  name: account.name
-              },
-          }]
-      }
-      api.transact(actions, {
-          blocksBehind: 3,
-          expireSeconds: 60,
-      }).then( (res: any) => {
-          console.log('sent: ', res);
-      }).catch( (err: any) => {
-          console.error('error: ', err);
-          store.error.set( err.isError ? JSON.stringify(err) : err )
-      });
-  };
 
   let head_block_num: number;
   store.head_block_num.subscribe((value) => {
@@ -49,6 +19,11 @@
   let error = "";
   store.error.subscribe((value) => {
     error = value;
+  });
+
+  let connected = false;
+  store.connected.subscribe((value) => {
+    connected = value;
   });
 
   let scatter: any = {};
@@ -66,10 +41,10 @@
     ethereum = JSON.parse(value || "{}");
   });
 
+  connect();
   update_block();
   update_time();
   detect_wallet();
-  login();
 </script>
 
 <div class="main">
@@ -78,6 +53,7 @@
   <div><b>EOS Public Key:</b> {account.publicKey}</div>
   <div><b>EOS Account:</b> {account.name}</div>
   <div><b>Error Message:</b> {error}</div>
+  <div><b>Connected:</b> {connected}</div>
 
   <div><b>isMetaMask:</b> {ethereum.isMetaMask ? true : false}</div>
   <div><b>isTokenPocket:</b> {ethereum.isTokenPocket ? true : false}</div>
@@ -85,13 +61,11 @@
   <div><b>Scatter:</b> {JSON.stringify(scatter)}</div>
   <div><b>Ethereum:</b> {JSON.stringify(ethereum)}</div>
 
-  <button on:click={ping}>
-    Ping
-  </button>
-
-  <button on:click={login}>
-    Login
-  </button>
+  <button on:click={ping}>ping</button>
+  <button on:click={login}>login</button>
+  <button on:click={connect}>connect</button>
+  <button on:click={forget}>forget</button>
+  <button on:click={disconnect}>disconnect</button>
 </div>
 
 <style lang="scss" global>
