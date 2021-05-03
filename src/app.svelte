@@ -26,19 +26,19 @@
     connected = value;
   });
 
-  let scatter: any = {};
+  let scatter = "{}";
   store.scatter.subscribe((value) => {
-    scatter = JSON.parse(value || "{}");
+    scatter = value || "{}";
   });
 
-  let account: any = {};
+  let account = "{}";
   store.account.subscribe((value) => {
-    account = JSON.parse(value || "{}");
+    account = value || "{}";
   });
 
-  let ethereum: any = {};
+  let ethereum = "{}";
   store.ethereum.subscribe((value) => {
-    ethereum = JSON.parse(value || "{}");
+    ethereum = value || "{}";
   });
 
   connect();
@@ -50,16 +50,16 @@
 <div class="main">
   <div><b>Block Number:</b> {head_block_num}</div>
   <div><b>Time:</b> {time}</div>
-  <div><b>EOS Public Key:</b> {account.publicKey}</div>
-  <div><b>EOS Account:</b> {account.name}</div>
+  <div><b>EOS Public Key:</b> {JSON.parse(account).publicKey}</div>
+  <div><b>EOS Account:</b> {JSON.parse(account).name}</div>
   <div><b>Error Message:</b> {error}</div>
   <div><b>Connected:</b> {connected}</div>
 
-  <div><b>isMetaMask:</b> {ethereum.isMetaMask ? true : false}</div>
-  <div><b>isTokenPocket:</b> {ethereum.isTokenPocket ? true : false}</div>
-  <div><b>isMYKEY:</b> {ethereum.isMYKEY ? true : false}</div>
-  <div><b>Scatter:</b> {JSON.stringify(scatter)}</div>
-  <div><b>Ethereum:</b> {JSON.stringify(ethereum)}</div>
+  <div><b>isMetaMask:</b> {JSON.parse(ethereum).isMetaMask ? true : false}</div>
+  <div><b>isTokenPocket:</b> {JSON.parse(ethereum).isTokenPocket ? true : false}</div>
+  <div><b>isMYKEY:</b> {JSON.parse(ethereum).isMYKEY ? true : false}</div>
+  <div><b>Scatter:</b> {scatter}</div>
+  <div><b>Ethereum:</b> {ethereum}</div>
 
   <button on:click={ping}>ping</button>
   <button on:click={login}>login</button>

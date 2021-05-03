@@ -23,7 +23,9 @@ export async function login() {
 
 export async function forget() {
   await ScatterJS.scatter.forgetIdentity();
+  store.connected.set(ScatterJS.scatter.isConnected());
   store.scatter.set("{}");
+  store.account.set("{}");
 }
 
 export async function connect() {
