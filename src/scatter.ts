@@ -7,7 +7,7 @@ ScatterJS.plugins(new ScatterEOS());
 export const network = ScatterJS.Network.fromJson({
   blockchain: "eos",
   chainId: "aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906",
-  host: "eos.eosn.io",
+  host: "eos.greymass.com",
   port: 443,
   protocol: "https",
 });
@@ -15,17 +15,33 @@ export const network = ScatterJS.Network.fromJson({
 export const rpc = new JsonRpc(network.fullhost());
 
 export async function login() {
-  const identity = await ScatterJS.login();
-  store.scatter.set(JSON.stringify(identity));
-  const account = ScatterJS.account("eos");
-  store.account.set(JSON.stringify(account));
+  const connected = await ScatterJS.connect("SX Web", { network });
+  store.connected.set(connected);
+  if ( connected ) {
+    const identity = await ScatterJS.login();
+    const account = ScatterJS.account("eos");
+    console.log("identity", identity)
+    console.log("account", account)
+    store.account.set(account.name);
+    store.publicKey.set(account.publicKey);
+  }
 }
 
 export async function forget() {
   await ScatterJS.scatter.forgetIdentity();
   store.connected.set(ScatterJS.scatter.isConnected());
-  store.scatter.set("{}");
-  store.account.set("{}");
+  store.publicKey.set("");
+  store.scatter.set("");
+  store.account.set("");
+}
+
+export async function logout() {
+  await ScatterJS.scatter.forgetIdentity();
+  ScatterJS.scatter.disconnect();
+  store.connected.set(ScatterJS.scatter.isConnected());
+  store.publicKey.set("");
+  store.scatter.set("");
+  store.account.set("");
 }
 
 export async function connect() {
@@ -37,8 +53,9 @@ export async function connect() {
 export async function disconnect() {
   ScatterJS.scatter.disconnect();
   store.connected.set(ScatterJS.scatter.isConnected());
-  store.scatter.set("{}");
-  store.account.set("{}");
+  store.publicKey.set("");
+  store.scatter.set("");
+  store.account.set("");
 }
 
 export function get_api() {

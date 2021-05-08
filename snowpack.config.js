@@ -11,7 +11,7 @@ module.exports = {
     routes: [
         {match: 'routes', src: '.*', dest: '/index.html'}
     ],
-    plugins: ['@snowpack/plugin-webpack', '@snowpack/plugin-svelte', '@snowpack/plugin-typescript'],
+    plugins: ['@snowpack/plugin-svelte', '@snowpack/plugin-typescript'],
     packageOptions: {
         packageLookupFields: ['svelte'],
     },

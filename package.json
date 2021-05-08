@@ -11,6 +11,7 @@
         "buffer": true
     },
     "dependencies": {
+        "eos-common": "^0.8.0",
         "eosjs": "*",
         "node-fetch": "*",
         "scatter-ts": "^0.1.7",
