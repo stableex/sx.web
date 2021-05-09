@@ -2,58 +2,200 @@ import { get_api } from "./scatter";
 import { ScatterJS, Action } from "scatter-ts";
 import * as store from "./store";
 import { is_lend_staked } from "./lend.defi"
+import { update_tokens } from "./update";
+import type { ExtendedAsset } from "eos-common";
 
-export function ping() {
-    const account = ScatterJS.account("eos");
-    transact([{
-        account: 'pingpong.sx',
-        name: 'ping',
-        authorization: [{
-            actor: account.name,
-            permission: account.authority,
-        }],
-        data: {
-            name: account.name
-        },
-    }]);
-};
-
-export async function withdraw( sxf: string ) {
+export async function unlend( ext_quantities: ExtendedAsset[] ) {
     const account = ScatterJS.account("eos");
     const authorization = [{
         actor: account.name,
         permission: account.authority,
     }]
 
-    // send BUSDT or BUSN
-    transact([{
-        account: 'lptoken.sx',
+    const actions: Action[] = []
+
+    for ( const ext_quantity of ext_quantities ) {
+        if ( Number(ext_quantity.quantity.amount) == 0) continue;
+        actions.push({
+            account: ext_quantity.contract.toString(),
+            name: 'transfer',
+            authorization,
+            data: {
+                from: account.name,
+                to: "lend.defi",
+                quantity: ext_quantity.quantity.toString(),
+                memo: "unstake"
+            },
+        });
+    }
+    // send SXA or SXF
+    await transact(actions);
+    setTimeout( () => update_tokens( account.name ), 2000 );
+};
+
+
+export async function lend( ext_quantities: ExtendedAsset[] ) {
+    const account = ScatterJS.account("eos");
+    const authorization = [{
+        actor: account.name,
+        permission: account.authority,
+    }]
+
+    const actions: Action[] = []
+
+    for ( const ext_quantity of ext_quantities ) {
+        if ( Number(ext_quantity.quantity.amount) == 0) continue;
+        actions.push({
+            account: ext_quantity.contract.toString(),
+            name: 'transfer',
+            authorization,
+            data: {
+                from: account.name,
+                to: "lend.defi",
+                quantity: ext_quantity.quantity.toString(),
+                memo: "deposit"
+            },
+        });
+    }
+    // send SXA or SXF
+    await transact(actions);
+    setTimeout( () => update_tokens( account.name ), 2000 );
+};
+
+export async function zap( ext_quantity: ExtendedAsset, symcode: string ) {
+    const account = ScatterJS.account("eos");
+    const authorization = [{
+        actor: account.name,
+        permission: account.authority,
+    }]
+
+    const actions: Action[] = [];
+
+    // unstake BUSDT or BUSN
+    const in_symcode = ext_quantity.quantity.symbol.code().toString();
+    if ( in_symcode == "BUSDT") {
+        const is_busdt_staked = await is_lend_staked( account.name, 2 );
+        if ( is_busdt_staked ) {
+            actions.push({
+                account: 'lend.defi',
+                name: 'unstake',
+                authorization,
+                data: {
+                    owner: account.name,
+                    sym: "BUSDT",
+                },
+            });
+        }
+    }
+    else if ( in_symcode == "BUSN" ) {
+        const is_busn_staked = await is_lend_staked( account.name, 5 );
+        if ( is_busn_staked ) {
+            actions.push({
+                account: 'lend.defi',
+                name: 'unstake',
+                authorization,
+                data: {
+                    owner: account.name,
+                    sym: "BUSN",
+                },
+            });
+        }
+    }
+
+    actions.push({
+        account: ext_quantity.contract.toString(),
+        name: 'transfer',
+        authorization,
+        data: {
+            from: account.name,
+            to: "zap.sx",
+            quantity: ext_quantity.quantity.toString(),
+            memo: symcode
+        },
+    })
+
+    // send SXA or SXF
+    await transact(actions);
+    setTimeout( () => update_tokens( account.name ), 2000 );
+};
+
+export async function withdraw( ext_quantity: ExtendedAsset ) {
+    const account = ScatterJS.account("eos");
+    const authorization = [{
+        actor: account.name,
+        permission: account.authority,
+    }]
+
+    // send SXA or SXF
+    await transact([{
+        account: ext_quantity.contract.toString(),
         name: 'transfer',
         authorization,
         data: {
             from: account.name,
             to: "curve.sx",
-            quantity: sxf,
+            quantity: ext_quantity.quantity.toString(),
             memo: "withdraw"
         },
     }]);
+    setTimeout( () => update_tokens( account.name ), 2000 );
 };
 
-
-export async function deposit( busdt: string, busn: string ) {
+export async function deposit_sxa( usdt: ExtendedAsset, usn: ExtendedAsset ) {
     const account = ScatterJS.account("eos");
     const authorization = [{
         actor: account.name,
         permission: account.authority,
     }]
-    console.log(busdt, busn);
+    const actions: Action[] = [];
+
+    // send BUSDT or BUSN
+    actions.push(...[{
+        account: usdt.contract.toString(),
+        name: 'transfer',
+        authorization,
+        data: {
+            from: account.name,
+            to: "curve.sx",
+            quantity: usdt.quantity.toString(),
+            memo: "deposit,SXA"
+        },
+    },{
+        account: usn.contract.toString(),
+        name: 'transfer',
+        authorization,
+        data: {
+            from: account.name,
+            to: "curve.sx",
+            quantity: usn.quantity.toString(),
+            memo: "deposit,SXA"
+        },
+    },{
+        account: 'curve.sx',
+        name: 'deposit',
+        authorization,
+        data: {
+            owner: account.name,
+            pair_id: "SXA"
+        },
+    }]);
+
+    await transact(actions);
+    setTimeout( () => update_tokens( account.name ), 2000 );
+};
+
+export async function deposit_sxf( busdt: ExtendedAsset, busn: ExtendedAsset ) {
+    const account = ScatterJS.account("eos");
+    const authorization = [{
+        actor: account.name,
+        permission: account.authority,
+    }]
     const actions: Action[] = [];
 
     // unstake BUSDT or BUSN
     const is_busdt_staked = await is_lend_staked( account.name, 2 );
     const is_busn_staked = await is_lend_staked( account.name, 5 );
-    console.log("is_busdt_staked", is_busdt_staked)
-    console.log("is_busn_staked", is_busn_staked)
+
     if ( is_busdt_staked ) {
         actions.push({
             account: 'lend.defi',
@@ -66,7 +208,6 @@ export async function deposit( busdt: string, busn: string ) {
         });
     }
     if ( is_busn_staked ) {
-        console.log("staked USN");
         actions.push({
             account: 'lend.defi',
             name: 'unstake',
@@ -80,23 +221,23 @@ export async function deposit( busdt: string, busn: string ) {
 
     // send BUSDT or BUSN
     actions.push(...[{
-        account: 'btoken.defi',
+        account: busdt.contract.toString(),
         name: 'transfer',
         authorization,
         data: {
             from: account.name,
             to: "curve.sx",
-            quantity: busdt,
+            quantity: busdt.quantity.toString(),
             memo: "deposit,SXF"
         },
     },{
-        account: 'btoken.defi',
+        account: busn.contract.toString(),
         name: 'transfer',
         authorization,
         data: {
             from: account.name,
             to: "curve.sx",
-            quantity: busn,
+            quantity: busn.quantity.toString(),
             memo: "deposit,SXF"
         },
     },{
@@ -109,7 +250,33 @@ export async function deposit( busdt: string, busn: string ) {
         },
     }]);
 
-    transact(actions);
+    // restake to keep same health ratio
+    if ( is_busdt_staked ) {
+        actions.push({
+            account: 'lend.defi',
+            name: 'stake',
+            authorization,
+            data: {
+                owner: account.name,
+                sym: "BUSDT",
+            },
+        });
+    }
+    if ( is_busn_staked ) {
+        console.log("staked USN");
+        actions.push({
+            account: 'lend.defi',
+            name: 'stake',
+            authorization,
+            data: {
+                owner: account.name,
+                sym: "BUSN",
+            },
+        });
+    }
+
+    await transact(actions);
+    setTimeout( () => update_tokens( account.name ), 2000 );
 };
 
 async function transact(actions: Action[]) {

@@ -11,6 +11,7 @@
         "buffer": true
     },
     "dependencies": {
+        "big-integer": "^1.6.48",
         "eos-common": "^0.8.0",
         "eosjs": "*",
         "node-fetch": "*",
