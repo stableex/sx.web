@@ -282,7 +282,7 @@ export async function deposit_sxf( busdt: ExtendedAsset, busn: ExtendedAsset ) {
 async function transact(actions: Action[]) {
     const api = get_api();
     try {
-        const result = await api.transact({ actions }, { blocksBehind: 3, expireSeconds: 30 });
+        const result = await api.transact({ actions }, { blocksBehind: 3, expireSeconds: 300 });
         console.log('sent: ', result);
         store.error.set("")
         store.trx_id.set( result.transaction_id );

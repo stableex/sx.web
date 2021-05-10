@@ -3,17 +3,17 @@ import * as store from "./store";
 import { Asset, ExtendedAsset, ExtendedSymbol, Sym, Name } from "eos-common";
 import { ZERO_EXT_ASSET } from "./assets"
 
-export function update_block() {
-  rpc.get_info().then((info) => {
-    store.head_block_num.set(info.head_block_num);
-    setTimeout(update_block, 5000);
-  });
-}
+// export function update_block() {
+//   rpc.get_info().then((info) => {
+//     store.head_block_num.set(info.head_block_num);
+//     setTimeout(update_block, 5000);
+//   });
+// }
 
-export function update_time() {
-  store.time.set(new Date().toLocaleString());
-  setTimeout(update_time, 500);
-}
+// export function update_time() {
+//   store.time.set(new Date().toLocaleString());
+//   setTimeout(update_time, 500);
+// }
 
 export function detect_wallet() {
   const win: any = window;
